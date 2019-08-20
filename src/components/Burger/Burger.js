@@ -1,24 +1,28 @@
 import React from 'react';
-import classes from './Burger.module.css'
-import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 
-const Burger = (props) => {
-    let transformedIngredients = Object.keys(props.ingredients)
-        .map(ingredientType => [...Array(props.ingredients[ingredientType])] // Create an array of ingredient size for each ing.
-            .map((_, index) => <BurgerIngredient key={ingredientType + index} type={ingredientType}/> // Render for each ingredient
-            ))
-        .reduce((previousValue, currentValue) => previousValue.concat(currentValue), []); // Flatten the arrays
+import classes from './Burger.module.css';
+import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
-    if(transformedIngredients.length === 0){
-        transformedIngredients = <p>Please start adding ingredients</p>;
+const burger = ( props ) => {
+    let transformedIngredients = Object.keys( props.ingredients )
+        .map( igKey => {
+            return [...Array( props.ingredients[igKey] )].map( ( _, i ) => {
+                return <BurgerIngredient key={igKey + i} type={igKey} />;
+            } );
+        } )
+        .reduce((arr, el) => {
+            return arr.concat(el)
+        }, []);
+    if (transformedIngredients.length === 0) {
+        transformedIngredients = <p>Please start adding ingredients!</p>;
     }
     return (
         <div className={classes.Burger}>
-            <BurgerIngredient type="bread-top"/>
+            <BurgerIngredient type="bread-top" />
             {transformedIngredients}
-            <BurgerIngredient type="bread-bottom"/>
+            <BurgerIngredient type="bread-bottom" />
         </div>
     );
 };
 
-export default Burger;
+export default burger;
